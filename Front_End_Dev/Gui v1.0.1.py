@@ -53,17 +53,15 @@ tk.Button(root, text = 'Lift', height = 4, width = 20).place(x = 100, y = 400)
 tk.Button(root, text = 'Drop', height = 4, width = 20).place(x = 100, y = 500)
 
 #Video Streamer
-videoFrame = tk.Frame(root, bg = 'black', height = 150, width = 250).place(x = 50, y = 50)
-play = tk.PhotoImage(file = 'Play.png')
-play = play.subsample(20,20)
-tk.Button(videoFrame, image = play, borderwidth = 0, bg = 'black').place(x = 140, y = 90)
+videoFrame = tk.Frame(root, bg = 'black', height = 300, width = 550).place(x = 50, y = 50)
+play = PhotoImage(file = 'Play.png')
+play = play.subsample(10,10)
+tk.Button(videoFrame, image = play, borderwidth = 0, bg = 'black').place(x = 250, y = 130)
 
 #Demo button
 tk.Button(root, text = 'Run Demo', height = 2, width = 20, font = 'bold').place(x = 700, y = 100)
 
 #Turtle
-tk.Button(root, text = 'Draw Path', height = 3, width = 5, command = opentTurtle).place(x = 350, y = 100)
-
-
+tk.Button(root, text = 'Draw Path', height = 2, width = 20, font = 'bold', command = opentTurtle).place(x = 700, y = 200)
 #Run Demo
 root.mainloop()
