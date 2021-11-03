@@ -1,0 +1,35 @@
+import RPi.GPIO as GPIO
+import time
+
+LEDR_PIN = 2
+LEDG_PIN = 3
+LEDA_PIN = 4
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LEDR_PIN, GPIO.OUT)
+
+def failed():
+    #red
+        GPIO.output(LEDR_PIN, GPIO.HIGH)
+
+def warning():  
+    #amber =     
+        GPIO.output(LEDA_PIN, GPIO.HIGH)
+
+
+def normal():
+    #green        
+    GPIO.output(LEDG_PIN, GPIO.HIGH)
+
+        
+def red_led_down():
+    GPIO.output(LEDR_PIN, GPIO.LOW)
+
+def amber_led_down():
+    GPIO.output(LEDA_PIN, GPIO.LOW)
+
+def green_led_down():
+    GPIO.output((LEDG_PIN, GPIO.LOW)
+
+
+        
+  
