@@ -7,82 +7,90 @@ import argparse
 i = 0
 frame_width= 640
 frame_height=480
-
+user_input = ""
 
 
 cap = cv2.VideoCapture(0)
 cap.set(3,frame_width)
 cap.set(4,frame_height)
 
-colours = []
+
 
 
 
 #trackbar is implemented from https://docs.opencv.org/3.4.15/d9/dc8/tutorial_py_trackbar.html and used for educational purposes only
-def nothing (x):
-    pass
+# def nothing (x):
+#     pass
 
-cv2.namedWindow("Tracking")
-cv2.createTrackbar("LH", "Tracking", 0, 255, nothing )
-cv2.createTrackbar("LS", "Tracking", 0, 255, nothing )
-cv2.createTrackbar("LV", "Tracking", 0, 255, nothing )
-cv2.createTrackbar("UH", "Tracking", 255, 255, nothing )
-cv2.createTrackbar("US", "Tracking", 255, 255, nothing )
-cv2.createTrackbar("UV", "Tracking", 255, 255, nothing )
+#tracking bar code left here so the team mates can use for their future projects
+# cv2.namedWindow("Tracking")
+# cv2.createTrackbar("LH", "Tracking", 0, 255, nothing )
+# cv2.createTrackbar("LS", "Tracking", 0, 255, nothing )
+# cv2.createTrackbar("LV", "Tracking", 0, 255, nothing )
+# cv2.createTrackbar("UH", "Tracking", 255, 255, nothing )
+# cv2.createTrackbar("US", "Tracking", 255, 255, nothing )
+# cv2.createTrackbar("UV", "Tracking", 255, 255, nothing )
 
 
 while True:
     key = cv2.waitKey(1)
     ret, frame  = cap.read()
 
-    frame_blur=cv2.GaussianBlur(frame, (7,7),1)
-    frame_gray=cv2.cvtColor(frame_blur,cv2.COLOR_BGR2GRAY)
+    # frame_blur=cv2.GaussianBlur(frame, (7,7),1)
+    # frame_gray=cv2.cvtColor(frame_blur,cv2.COLOR_BGR2GRAY)
 
 
     #capture the image , convert the bgr colours to hsv and store in a hsv_image variable    
     hsv_image = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    #we want to set upper limit and lower limit for each colour so we can only filter the colours
-    #trackbar is implemented from https://docs.opencv.org/3.4.15/d9/dc8/tutorial_py_trackbar.html and used for educational purposes only    
-    low_hue = cv2.getTrackbarPos("LH", "Tracking")
-    low_saturation = cv2.getTrackbarPos("LS", "Tracking")
-    lov_value = cv2.getTrackbarPos("LV", "Tracking")
-    upper_hue = cv2.getTrackbarPos("UH", "Tracking")
-    upper_saturation = cv2.getTrackbarPos("US", "Tracking")
-    upper_value = cv2.getTrackbarPos("UV", "Tracking")
+    # #we want to set upper limit and lower limit for each colour so we can only filter the colours
+    # #trackbar is implemented from https://docs.opencv.org/3.4.15/d9/dc8/tutorial_py_trackbar.html and used for educational purposes only    
+    # low_hue = cv2.getTrackbarPos("LH", "Tracking")
+    # low_saturation = cv2.getTrackbarPos("LS", "Tracking")
+    # lov_value = cv2.getTrackbarPos("LV", "Tracking")
+    # upper_hue = cv2.getTrackbarPos("UH", "Tracking")
+    # upper_saturation = cv2.getTrackbarPos("US", "Tracking")
+    # upper_value = cv2.getTrackbarPos("UV", "Tracking")
    
 
     #to display the modified vales on the trackbar
-    lower_test = np.array([low_hue , low_saturation , lov_value])
-    upper_test = np.array([upper_hue , upper_saturation , upper_value])
-    test_mask = cv2.inRange(hsv_image, lower_test, upper_test)
-    test = cv2.bitwise_and(frame, frame, mask=test_mask)
+    # lower_test = np.array([low_hue , low_saturation , lov_value])
+    # upper_test = np.array([upper_hue , upper_saturation , upper_value])
+    # test_mask = cv2.inRange(hsv_image, lower_test, upper_test)
+    # test = cv2.bitwise_and(frame, frame, mask=test_mask)
    
 
-    #reds
-    lower_red = np.array([160, 100, 50])
-    upper_red = np.array([180, 255, 255])
-    red_mask = cv2.inRange(hsv_image, lower_red, upper_red)
+    #reds given they are located on both en of a colour chart I categorised them 
+    # as light res and ark reds and concatonate them together
+    lower_red_light = np.array([0, 100, 100])
+    upper_red_light = np.array([10, 255, 255])
+
+    lower_red_dark = np.array([170, 100, 100])
+    upper_red_dark = np.array([180, 255, 255])
+
+    red_mask_light = cv2.inRange(hsv_image, lower_red_light, upper_red_light)
+    red_mask_dark = cv2.inRange(hsv_image, lower_red_dark, upper_red_dark)
+    red_mask = red_mask_light + red_mask_dark
     red = cv2.bitwise_and(frame, frame, mask=red_mask)
    
 
   
     #green color range
-    lower_green = np.array([25, 52, 72])
-    upper_green = np.array([102, 255, 255])
+    lower_green = np.array([38, 100, 100])
+    upper_green = np.array([75, 255, 255])
     green_mask = cv2.inRange(hsv_image, lower_green, upper_green)
     greens = cv2.bitwise_and(frame, frame, mask=green_mask)
 
 
     #blue color range
-    lower_blue = np.array([98, 109, 20])
-    upper_blue = np.array([112, 255, 255])
+    lower_blue = np.array([95, 100, 100])
+    upper_blue = np.array([130, 255, 255])
     blue_mask = cv2.inRange(hsv_image, lower_blue, upper_blue)
     blues = cv2.bitwise_and(frame, frame, mask=blue_mask)
 
     #yellow color range
-    lower_yellow = np.array([20, 190, 20,])
-    upper_yellow = np.array([30, 255, 255])
+    lower_yellow = np.array([20, 100, 100,])
+    upper_yellow = np.array([35, 255, 255])
     yellow_mask = cv2.inRange(hsv_image, lower_yellow, upper_yellow)
     yellows = cv2.bitwise_and(frame, frame, mask=yellow_mask) 
 
@@ -114,7 +122,7 @@ while True:
 
         for c in contour:
             cont_area = cv2.contourArea(c)
-            if cont_area > 500:
+            if cont_area > 1000:
                 cv2.drawContours(frame, [c], -1, (0,255,0),3)
 
                 # to calculate the center of the contour
@@ -132,10 +140,28 @@ while True:
                             (255,255,255),
                             3)
 
-    contour_drawer (cont_red,red)
-    contour_drawer (cont_blue,blue)
-    contour_drawer (cont_green,green)
-    contour_drawer (cont_yellow,yellow)
+    #only detect the colour define in the system & slected by the user
+    while user_input=="":
+        user_input = input("Enter colour name to be detected, (blue, red, green, yeloow):").lower()
+        
+        # prompt to user enter only the selecte values
+        while  user_input != "red" or user_input != "blue" or user_input != "green" or user_input != "yellow":
+            user_input = input("Please enter only from the listed colours to be detected (blue, red, green, yeloow):").lower()
+            if  user_input == "red" or user_input == "blue" or user_input == "green" or user_input == "yellow":
+                break
+            # exit key is pressed
+            elif key == ord('q') or key == ord('Q') :
+                break
+
+    if  user_input == "red":                      
+        contour_drawer (cont_red,red)
+    elif  user_input == "blue":      
+        contour_drawer (cont_blue,blue)
+    elif  user_input == "green":
+        contour_drawer (cont_green,green)
+    elif  user_input == "yellow":   
+        contour_drawer (cont_yellow,yellow)
+    
 
   
     #test if the mask is working properly - donot forget to delete
@@ -143,7 +169,7 @@ while True:
 
     #basic escape with q button.
 
-    if key == ord('q'):
+    if key == ord('q') or key == ord('Q') :
         break
 
 
